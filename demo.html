@@ -12,24 +12,24 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body >
-  <core-pubnub publish_key="pub-c-0236c7bb-a942-4ffd-93fe-c60380d89611"
+  <iron-pubnub publish_key="pub-c-0236c7bb-a942-4ffd-93fe-c60380d89611"
                subscribe_key="sub-c-b969ffd2-2707-11e4-a114-02ee2ddab7fe" 
-               origin="pubsub.pubnub.com" id="core" uuid="">
-    <core-pubnub-subscribe channel="pubnubPolymerDemo" id="sub"> 
-      <core-pubnub-publish channel="pubnubPolymerDemo" id="pub" message="Published after...">
-        <core-pubnub-publish channel="pubnubPolymerDemo" id="pub2" message="connecting!">
-          <core-pubnub-history channel="pubnubPolymerDemo" id="hist" ></core-pubnub-history>
-          <core-pubnub-here-now channel="pubnubPolymerDemo" id="here"></core-pubnub-here-now>
-          <core-pubnub-where-now id="where" uuid=""></core-pubnub-where-now>
-        </core-pubnub-publish>
-      </core-pubnub-publish>
-    </core-pubnub-subscribe>
-  </core-pubnub>
+               origin="pubsub.pubnub.com" id="iron" uuid="">
+    <iron-pubnub-subscribe channel="pubnubPolymerDemo" id="sub"> 
+      <iron-pubnub-publish channel="pubnubPolymerDemo" id="pub" message="Published after...">
+        <iron-pubnub-publish channel="pubnubPolymerDemo" id="pub2" message="connecting!">
+          <iron-pubnub-history channel="pubnubPolymerDemo" id="hist" ></iron-pubnub-history>
+          <iron-pubnub-here-now channel="pubnubPolymerDemo" id="here"></iron-pubnub-here-now>
+          <iron-pubnub-where-now id="where" uuid=""></iron-pubnub-where-now>
+        </iron-pubnub-publish>
+      </iron-pubnub-publish>
+    </iron-pubnub-subscribe>
+  </iron-pubnub>
 <div class="container">
 <h1>PubNub Polymer Demo</h1><hr>
 <div class="row">
     <div class="col-md-8">
-      <h2> <a href="./#core-pubnub-subscribe">&lt;core-pubnub-subscribe&gt; </a> </h2>
+      <h2> <a href="./#iron-pubnub-subscribe">&lt;iron-pubnub-subscribe&gt; </a> </h2>
     <div class="col-md-6">
       <h2>Messages</h2>
       <list-data heading="Received Messages" id="msgsList"></list-data>
@@ -40,7 +40,7 @@
     </div>
   </div>
     <div class="col-md-4">
-      <h2> <a href="./#core-pubnub-publish" >&lt;core-pubnub-publish&gt; </a> </h2>
+      <h2> <a href="./#iron-pubnub-publish" >&lt;iron-pubnub-publish&gt; </a> </h2>
         <div class="form-group">
           <label><h2>Publish a message!</h2></label>
           <input type="text" class="form-control" id="newMsg">
@@ -51,18 +51,18 @@
   <hr>
   <div class="row">
     <div class="col-md-4">
-      <h2> <a href="./#core-pubnub-history">&lt;core-pubnub-history&gt; </a>
+      <h2> <a href="./#iron-pubnub-history">&lt;iron-pubnub-history&gt; </a>
       </h2>
       <!-- <button id="histButton" type="submit" class="btn btn-default"><i class="fa fa-refresh"></i></button> <br><br> -->
       <list-data heading="Last 100 Messages" id="histList"></list-data>
     </div>
     <div class="col-md-4">
-      <h2> <a href="./#core-pubnub-here-now">&lt;core-pubnub-here-now&gt; </a> </h2>
+      <h2> <a href="./#iron-pubnub-here-now">&lt;iron-pubnub-here-now&gt; </a> </h2>
       <!--<button id="hereButton" type="submit" class="btn btn-default"><i class="fa fa-refresh"></i></button> <br><br>-->
       <list-data heading="Current Users" id="hereList"></list-data>
     </div>
     <div class="col-md-4">
-      <h2> <a href="./#core-pubnub-where-now">&lt;core-pubnub-where-now&gt; </a> </h2>
+      <h2> <a href="./#iron-pubnub-where-now">&lt;iron-pubnub-where-now&gt; </a> </h2>
       <!--<button id="whereButton" type="submit" class="btn btn-default"><i class="fa fa-refresh"></i></button> <br><br>-->
       <list-data heading="Where am I?" id="whereList"></list-data>
     </div>

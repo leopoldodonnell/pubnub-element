@@ -5,19 +5,26 @@ This element initializes the PubNub client. This element must be created before 
 
 ### Basic Usage:
 
-    <core-pubnub publish_key="demo" subscribe_key="demo"></core-pubnub>
+<iron-pubnub publish_key="demo" subscribe_key="demo"></iron-pubnub>
 
-@element core-pubnub
+@element iron-pubnub
 @blurb Element providing encapsulation of the PubNub JS SDK.
 @status alpha
+@demo demo.html
 @homepage 
 -->
-<polymer-element name="core-pubnub" hidden constructor="corePubNub" attributes="publish_key subscribe_key auth_key origin uuid cipher_key noleave keepalive secret_key ssl windwoing jsonp done pubnub">
+
+<dom-module id="iron-pubnub">
   <script src="https://cdn.pubnub.com/pubnub.js"></script>
 
+  <template>
+  </template>
+
   <script>
-    Polymer('core-pubnub', {
-      /**
+    Polymer({
+      is:"iron-pubnub",
+      properties: {
+        /**
         * The `publish_key` attribute sets the publish_key that will be used when publishing messages to a channel.
         * 
         * **REQUIRED**
@@ -26,9 +33,12 @@ This element initializes the PubNub client. This element must be created before 
         * @type String
         * @default ''
         */
-      publish_key: '',
-
-      /**
+        publish_key: {
+          type: String,
+          value: '',
+          reflectToAttribute: true
+        },
+        /**
         * The `subscribe_key` attribute sets the subscribe_key that will be used when subscribing to a channel.
         * 
         * **REQUIRED**
@@ -37,9 +47,11 @@ This element initializes the PubNub client. This element must be created before 
         * @type String
         * @default ''
         */
-      subscribe_key: '',
-
-      /**
+        subscribe_key: {
+          type: String,
+          reflectToAttribute: true
+        },
+        /**
         * The `auth_key` attribute sets the auth_key to be used for determining User-Level Access Manager permissions.
         *
         * **OPTIONAL**
@@ -48,8 +60,11 @@ This element initializes the PubNub client. This element must be created before 
         * @type String
         * @default undefined
         */
-
-      /**
+        auth_key: {
+          type: String,
+          reflectToAttribute: true
+        },
+        /**
         * The `origin` attribute specifies the URL of the PubNub server you are connecting to.
         *
         * **OPTIONAL**
@@ -58,8 +73,11 @@ This element initializes the PubNub client. This element must be created before 
         * @type String
         * @default undefined
         */
-      
-      /**
+        origin: {
+          type: String,
+          reflectToAttribute: true
+        },
+        /**
         * The `uuid` attribute sets the unique user id to be used to identify the client. By default a randomly generated uuid is created by the client.
         *
         * **OPTIONAL**
@@ -68,8 +86,11 @@ This element initializes the PubNub client. This element must be created before 
         * @type String
         * @default undefined
         */
-
-      /**
+        uuid: {
+          type: String,
+          reflectToAttribute: true
+        },
+        /**
         * The `cipher_key` attribute sets the cryptographic key to use for message level encryption with AES.
         *
         * **OPTIONAL**
@@ -78,8 +99,11 @@ This element initializes the PubNub client. This element must be created before 
         * @type String
         * @default undefined
         */
-
-      /**
+        cipher_key: {
+          type: String,
+          reflectToAttribute: true
+        },
+        /**
         * The `noleave` attribute, when set to true, explicitly disables presence leave events.
         *
         * **OPTIONAL**
@@ -88,8 +112,12 @@ This element initializes the PubNub client. This element must be created before 
         * @type Boolean
         * @default false
         */
-
-      /**
+        noleave: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+        /**
         * The `keepalive` attribute sets the interval betwween keepalive pings. Defaults to 60 seconds.
         *
         * **OPTIONAL**
@@ -98,8 +126,12 @@ This element initializes the PubNub client. This element must be created before 
         * @type Number
         * @default 60
         */
-
-      /**
+        keepalive: {
+          type: Number,
+          value: 60,
+          reflectToAttribute: true
+        },
+        /**
         * The `secret_key` attribute sets the secret_key used only to sign Access Manager API messages.
         *
         * **OPTIONAL**
@@ -108,8 +140,11 @@ This element initializes the PubNub client. This element must be created before 
         * @type String
         * @default undefined 
         */
-
-      /**
+        secret_key_key: {
+          type: String,
+          reflectToAttribute: true
+        },
+        /**
         * The `ssl` attribute, when set to true, enables transport layer encryption with SSL/TLS. 
         *
         * **OPTIONAL**
@@ -118,8 +153,12 @@ This element initializes the PubNub client. This element must be created before 
         * @type Boolean
         * @default false
         */
-
-      /**
+        ssl: {
+          type: boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+        /**
         * The `windowing` sets the time interval in milliseconds that PubNub will use to optimize message delivery by bundling them into a single compressed payload.
         *
         * **OPTIONAL**
@@ -128,8 +167,11 @@ This element initializes the PubNub client. This element must be created before 
         * @type number
         * @default undefined
         */
-
-      /**
+        windowing: {
+          type: Number,
+          reflectToAttribute: true
+        },
+        /**
        * The `jsonp` attribute, when set to true, explicitly enforces JSON(P) as the data transport method.
         *
         * **OPTIONAL**
@@ -138,25 +180,29 @@ This element initializes the PubNub client. This element must be created before 
        * @type boolean
        * @default undefined
        */
+        jsonp: {
+          type: Boolean,
+          reflectToAttribute: true
+        },
+      },
 
       domReady: function() {
-          var settings = {
-            publish_key: this.publish_key,
-            subscribe_key: this.subscribe_key,
-            auth_key: this.auth_key,
-            uuid: this.uuid,
-            cipher_key: this.cipher_key,
-            noleave: this.noleave,
-            keepalive: this.keepalive,
-            secret_key: this.secret_key,
-            ssl: this.ssl,
-            windowing: this.windowing,
-            jsonp: this.jsonp
-          }
-          // console.log("CORE READY");
-          this.pubnub = PUBNUB.init(settings);
-          this.fire('ready', this.pubnub);
-          this.done = true;
+        var settings = {
+          publish_key: this.publish_key,
+          subscribe_key: this.subscribe_key,
+          auth_key: this.auth_key,
+          uuid: this.uuid,
+          cipher_key: this.cipher_key,
+          noleave: this.noleave,
+          keepalive: this.keepalive,
+          secret_key: this.secret_key,
+          ssl: this.ssl,
+          windowing: this.windowing,
+          jsonp: this.jsonp
+        }
+        this.pubnub = PUBNUB.init(settings);
+        this.fire('ready', this.pubnub);
+        this.done = true;
       },
       auth_keyChanged: function(oldValue, newValue) {
         this.domReady();
@@ -191,9 +237,9 @@ This element initializes the PubNub client. This element must be created before 
       jsonpChanged: function(oldValue, newValue) {
         this.domReady();
       },
-    });
+    })
   </script>
-</polymer-element>
+</dom-module>
 
 <!--
 This element causes the client to create an open TCP socket to the PubNub Real-Time Network and begin listening for messages on a specified `channel`. 
@@ -204,29 +250,33 @@ All messages received while subscribed to the channel will be pushed into the me
 
 ### Basic Usage:
 
-Place it inside of a `<core-pubnub>` element.
+Place it inside of a `<iron-pubnub>` element.
 
-    <core-pubnub publish_key="demo" subscribe_key="demo">
-      <core-pubnub-subscribe channel="testChannel" messages="{{messages}}">
-      </core-pubnub-subscribe>
-    </core-pubnub>
+<iron-pubnub publish_key="demo" subscribe_key="demo">
+<iron-pubnub-subscribe channel="testChannel" messages="{{messages}}">
+</iron-pubnub-subscribe>
+</iron-pubnub>
 
-    <h3>testChannel Messages</h3>
+<h3>testChannel Messages</h3>
 
-    <template repeat="{{msg in messages}}">
-      <p>{{msg}}</p>
-    </template>
+<template repeat="{{msg in messages}}">
+<p>{{msg}}</p>
+</template>
 
 
-@element core-pubnub-subscribe
+@element iron-pubnub-subscribe
 @blurb Element that subscribes to PubNub channels.
 @status alpha
 @homepage 
 -->
-<polymer-element name="core-pubnub-subscribe" hidden attributes="channel timetoken windowing heartbeat state messages presence subscribe pubnub done">
+<dom-module id="iron-pubnub-subscribe">
+  <template></template>
+
   <script>
-    Polymer('core-pubnub-subscribe', {
-      /**
+    Polymer({
+      is:"iron-pubnub-subscribe",
+      properties: {
+        /**
         * The `messages` attribute will contain an array of all messages received since subscribing to the channel. 
         * New Messages are appeneded to the end of the array.
         *
@@ -234,8 +284,12 @@ Place it inside of a `<core-pubnub>` element.
         * @type Array
         * @default []
         */
-
-      /**
+        messages: {
+          type: Array,
+          value: function(){return []},
+          reflectToAttribute: true
+        },
+        /**
         * The `channel` attribute specifies the channel to subscribe to. It is possible to specify multiple channels as an array.
         * 
         * **REQUIRED**
@@ -244,9 +298,12 @@ Place it inside of a `<core-pubnub>` element.
         * @type String or Array 
         * @default ''
         */
-      channel: [],
-
-      /**
+        channel: {
+          type: Array,
+          value: function(){return []},
+          reflectToAttribute: true
+        },
+        /**
         * The `timetoken` attribute specifies the timetoken from which to start returning any available cached messages. Message retrieval with timetoken is not guranteed and should only be considered a best-effort service.
         *
         * **OPTIONAL**
@@ -255,8 +312,11 @@ Place it inside of a `<core-pubnub>` element.
         * @type Number 
         * @default undefined 
         */
-
-      /**
+        timetoken: {
+          type: Number,
+          reflectToAttribute: true
+        },
+        /**
         * The `windowing` attribute specifies the time interval in milliseconds that PubNub will use to optimize message delivery by bundling them into a single compressed payload. Setting a value of 1000 milliseconds will allow 100 messages in one second to be bundled and compressed for optimized delivery.
         *
         * **OPTIONAL**
@@ -265,8 +325,12 @@ Place it inside of a `<core-pubnub>` element.
         * @type Number 
         * @default 10
         */
-      
-      /**
+        messages: {
+          type: Number,
+          value: 10,
+          reflectToAttribute: true
+        },
+        /**
         * The `heartbeat` attribute defines the period in seconds after which the client should be disconnected due to in-activity. The default is `320` seconds. For mobile devices operating in environments that commonly experience highly variable network connectivity, setting a higher value for heartbeat would prevent the client from experiencing frequent leave/join events.
         *
         * **OPTIONAL**
@@ -275,8 +339,12 @@ Place it inside of a `<core-pubnub>` element.
         * @type Number 
         * @default 320 
         */
-
-      /**
+        heartbeat: {
+          type: Number,
+          value: 320,
+          reflectToAttribute: true
+        },
+        /**
         * The `state` attribute is a JSON object of key/value pairs with supported data-types of int, float and string. Nesting of key/values is not permitted and key names beginning with prefix "pn" are reserved.
         * If `state` is undefined, the current state for the specified `uuid` will be returned. If a specified key already exists for the `uuid` it will be over-written with the new value. Key values can be deleted by setting the particular value to "null". 
         * All `state` data for a user is deleted once the associated uuid leaves the channel.
@@ -287,8 +355,11 @@ Place it inside of a `<core-pubnub>` element.
         * @type Object
         * @default undefined
         */
-
-      /**
+        state: {
+          type: Object,
+          reflectToAttribute: true
+        },
+        /**
         * The `restore` attribute, if set to `true` will automatically attempt to retrieve any missed messages when reconnecting after disconnecting.
         *
         * **OPTIONAL**
@@ -297,43 +368,51 @@ Place it inside of a `<core-pubnub>` element.
         * @type Boolean 
         * @default undefined
         */
+        restore: {
+          type: Boolean,
+          reflectToAttribute: true
+        },
 
-      /**
+        suscribe: {
+          type: Boolean,
+          value: true
+        }
+        /**
         * The `connect` event fires on a successful connection to the PubNub cloud.
         *
         * @event connect
         */
-      
-      /**
+
+        /**
         * The `disconnect` event fires on client disconnect from the PubNub cloud.
         *
         * @event disconnect
         */
 
-      /**
+        /**
         * The `error` event fires on errors.
         *
         * @event error
         */
 
-      /**
+        /**
         * The `callback` event fires when a message is received. The message itself is in the `message` event's `detail` property.
         *
         * @event callback
         */
 
-      /**
+        /**
         * The `presence` event fires when presence events take place such as `join` or `leave`.
         *
         * @event presence
         */
 
-      /**
+        /**
         * The `reconnect` event fires on successfully re-connecting to the PubNub cloud.
         *
         * @event reconnect
         */
-
+      },
       subscribe: true,
       domReady: function() {
         var self = this;
@@ -411,7 +490,7 @@ Place it inside of a `<core-pubnub>` element.
         }
       },
       detached: function() {
-        if (subscribe) {
+        if (this.subscribe) {
           this.pubnub.unsubscribe({
             channel: this.channel
           });
@@ -419,7 +498,8 @@ Place it inside of a `<core-pubnub>` element.
       }
     });
   </script>
-</polymer-element>
+</dom-module>
+
 
 <!--
 This element is used to send messages to all subscribers of a channel. A successfully published message is replicated across the PubNub real-Time Network and sent simultaneously to all subscribed clients on a `channel`. 
@@ -432,22 +512,25 @@ The message argument can contain any JSON serializable data, including: Objects,
 
 ### Basic Usage:
 
-Place it inside of a `<core-pubnub>` element.
+Place it inside of a `<iron-pubnub>` element.
 
-    <core-pubnub publish_key="demo" subscribe_key="demo">
-      <core-pubnub-publish channel="testChannel" message="Polymer Rules!">
-      </core-pubnub-publish>
-    </core-pubnub>
+<iron-pubnub publish_key="demo" subscribe_key="demo">
+<iron-pubnub-publish channel="testChannel" message="Polymer Rules!">
+</iron-pubnub-publish>
+</iron-pubnub>
 
-@element core-pubnub-publish
+@element iron-pubnub-publish
 @blurb Element that publishes to a PubNub channel.
 @status alpha
 @homepage 
 -->
-<polymer-element name="core-pubnub-publish" hidden attributes="channel message publish_key publish pubnub done">
+<dom-module id="iron-pubnub-publish">
+  <template></template>
   <script>
-    Polymer('core-pubnub-publish', {
-      /**
+    Polymer({
+      is:"iron-pubnub-publish",
+      properties: {
+        /**
         * The `channel` attribute specifies the channel name to publish messages to. 
         * 
         * **REQUIRED**
@@ -456,8 +539,12 @@ Place it inside of a `<core-pubnub>` element.
         * @type String
         * @default ''
         */
-
-      /**
+        channel: {
+          type: String,
+          value: '',
+          reflectToAttribute: true
+        },
+        /**
         * The `message` attribute may be any valid JSON type including objects, arrays, strings, and numbers.
         *
         * **REQUIRED**
@@ -466,26 +553,34 @@ Place it inside of a `<core-pubnub>` element.
         * @type Anything
         * @default ''
         */
-
-      /**
+        channel: {
+          type: String,
+          value: '',
+          reflectToAttribute: true
+        },
+        message: {
+          type: Object,
+          value: {}
+        }
+        /**
         * The `publish` method causes the `message` to be published again
         *
         * @method publish
         * @return {Object} Returns undefined.
         */
 
-      /**
+        /**
         * The `success` callback fires on a successful publish.
         *
         * @event success
         */
 
-      /**
+        /**
         * The `error` callback fires on a publish error.
         *
         * @event error
         */
-      message: {},
+      },
       domReady: function() {
         var self = this;
         var onReady = function(e) {
@@ -533,10 +628,12 @@ Place it inside of a `<core-pubnub>` element.
             ready();
           }
         });
-     },
+      },
+
     });
   </script>
-</polymer-element>
+</dom-module>
+
 
 <!--
 This element fetches historical messages of a channel.
@@ -545,34 +642,41 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
 
 ### Basic Usage:
 
-    <core-pubnub publish_key="demo" subscribe_key="demo">
-      <core-pubnub-history channel="testChannel" history="{{history}}">
-      </core-pubnub-history>
-    </core-pubnub>
+<iron-pubnub publish_key="demo" subscribe_key="demo">
+<iron-pubnub-history channel="testChannel" history="{{history}}">
+</iron-pubnub-history>
+</iron-pubnub>
 
-    <h3>testChannel History</h3>
+<h3>testChannel History</h3>
 
-    <template repeat="{{hist in history}}">
-      <p>{{hist}}</p>
-    </template>
+<template repeat="{{hist in history}}">
+<p>{{hist}}</p>
+</template>
 
-@element core-pubnub-history
+@element iron-pubnub-history
 @blurb Element fetches historical messages of a channel.
 @status alpha
 @homepage 
 -->
-<polymer-element name="core-pubnub-history" hidden attributes="channel count end reverse start history pubnub done">
+<dom-module id="iron-pubnub-history">
+  <template></template>
   <script>
-    Polymer('core-pubnub-history', {
-      /**
+    Polymer({
+      is:"iron-pubnub-history",
+      properties: {
+        /**
         * The `history` attribute contains the result of the `history` call.
         *
         * @attribute history
         * @type Array
         * @default []
         */
+        history: {
+          type: Array,
+          value: function(){return []}
+        },
 
-      /**
+        /**
         * The `channel` attribute specifies the channel to return history messages from.
         *
         * **REQUIRED**
@@ -581,8 +685,11 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
         * @type String
         * @default ''
         */
-
-      /**
+        channel: {
+          type: String,
+          value: ''
+        },
+        /**
         * The `count` attribute specifies the number of historical messages to return.
         *
         * **OPTIONAL**
@@ -591,8 +698,12 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
         * @type Number
         * @default 100 
         */
-
-      /**
+        count: {
+          type: Number,
+          value: 100,
+          reflectToAttribute:true
+        },
+        /**
         * The `end` attribute specifies the time token delimiting the end of time slice (inclusive) to pull messages from.
         *
         * **OPTIONAL**
@@ -601,8 +712,11 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
         * @type Number
         * @default undefined 
         */
-
-      /**
+        end: {
+          type: Number,
+          reflectToAttribute:true
+        },
+        /**
         * The `reverse` attribute, when set to `true`, will traverse the time line in reverse starting with the newest message first. If both `start` and `end` are provided, `reverse` is ignored and messages are returned starting with the newest message.
         *
         * **OPTIONAL**
@@ -611,8 +725,12 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
         * @type Boolean
         * @default false
         */
-
-      /**
+        reserve: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute:true
+        },
+        /**
         * The `start` attribute specifies the time token delimiting the start of time slice (exclusive) to pull messages from.
         *
         * **OPTIONAL**
@@ -621,92 +739,105 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
         * @type Number
         * @default undefined
         */
-
-      /**
+        start: {
+          type: Number,
+          reflectToAttribute:true
+        },
+        /**
         * The `success` event is fired on successful retrieval of history.
         *
         * @event success
         */
 
-      /**
+        /**
         * The `error` event is fired on an unsuccessful retrieval of history.
         *
         * @event error
         */
 
-      domReady: function() {
-        var self = this;
-        var onReady = function(e) {
-          // console.log("CALL ME MAYBE");
-          self.pubnub = e.detail;
-          var ready = function() {
-            self.fire('ready', self.pubnub);
-            self.done = true;
-          };
-          self.pubnub.history({
-            channel: self.channel,
-            count: self.count,
-            end: self.end,
-            reverse: self.reverse,
-            start: self.start,
-            callback: function(m) {
-              self.history = m;
-              // console.log("HISTORY IS IN THE MAKING!");
-              // console.log(m);
-              self.fire('success', m);
-              ready();
-            },
-            error: function(m) {
-              self.fire('error', m);
-              ready();
-            }
-          });
-          self.parentNode.removeEventListener('ready', onReady);
+        domReady: function() {
+          var self = this;
+          var onReady = function(e) {
+            // console.log("CALL ME MAYBE");
+            self.pubnub = e.detail;
+            var ready = function() {
+              self.fire('ready', self.pubnub);
+              self.done = true;
+            };
+            self.pubnub.history({
+              channel: self.channel,
+              count: self.count,
+              end: self.end,
+              reverse: self.reverse,
+              start: self.start,
+              callback: function(m) {
+                self.history = m;
+                // console.log("HISTORY IS IN THE MAKING!");
+                // console.log(m);
+                self.fire('success', m);
+                ready();
+              },
+              error: function(m) {
+                self.fire('error', m);
+                ready();
+              }
+            });
+            self.parentNode.removeEventListener('ready', onReady);
+          }
+          if (this.parentNode.done) {
+            onReady({detail: this.parentNode.pubnub});
+          }
+          else {
+            this.parentNode.addEventListener('ready', onReady);
+          }
         }
-        if (this.parentNode.done) {
-          onReady({detail: this.parentNode.pubnub});
-        }
-        else {
-          this.parentNode.addEventListener('ready', onReady);
-        }
-      }
+      },
+
     });
   </script>
-</polymer-element>
+</dom-module>
+
 
 <!--
 This element obtains information about the current state of a channel, including a list of unique user-ids currently subscribed to the channel and the total occupancy count of the channel.
 
 ### Basic Usage:
 
-    <core-pubnub publish_key="demo" subscribe_key="demo">
-      <core-pubnub-here-now channel="testChannel" presence="{{presence}}">
-      </core-pubnub-history>
-    </core-pubnub>
+<iron-pubnub publish_key="demo" subscribe_key="demo">
+<iron-pubnub-here-now channel="testChannel" presence="{{presence}}">
+</iron-pubnub-history>
+</iron-pubnub>
 
-    <h3>testChannel Presence</h3>
+<h3>testChannel Presence</h3>
 
-    <template repeat="{{pres in presence}}">
-      <p>{{pres}}</p>
-    </template>
+<template repeat="{{pres in presence}}">
+<p>{{pres}}</p>
+</template>
 
-@element core-pubnub-here-now
+@element iron-pubnub-here-now
 @blurb Element obtains information about the current stat of a channel.
 @status alpha
 @homepage 
 -->
-<polymer-element name="core-pubnub-here-now" hidden attributes="channel state uuids presence pubnub done">
+<dom-module id="iron-pubnub-here-now">
+
+  <template></template>
   <script>
-    Polymer('core-pubnub-here-now', {
-      /**
+    Polymer({
+      is:"iron-pubnub-here-now",
+      properties: {
+        /**
         * The `presence` attribute contains the results of the `here-now` request.
         *
         * @attribute presence
         * @type Array
         * @default []
         */
-
-      /**
+        presence: {
+          type: Array,
+          value: function(){return []}
+        },
+        /**
         * The `channel` attribute sets the channel name to return occupancy results. If `channel` is not provided, `here_now` will return data for all channels.
         *
         * **OPTIONAL**
@@ -715,8 +846,11 @@ This element obtains information about the current state of a channel, including
         * @type String
         * @default undefined
         */
-
-      /**
+        channel: {
+          type: Array,
+          reflectToAttribute:true
+        },
+        /**
         * The `state` attribute, when set to `true`, causes `here_now` to also get subscriber state information.
         * 
         * **OPTIONAL**
@@ -725,8 +859,12 @@ This element obtains information about the current state of a channel, including
         * @type Boolean
         * @default false
         */
-
-      /**
+        state: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute:true
+        },
+        /**
         * The `uuids` attribute, when set to `false`, disables the return of uuids.
         * 
         * **OPTIONAL**
@@ -735,21 +873,23 @@ This element obtains information about the current state of a channel, including
         * @type Boolean
         * @default true
         */
-
-      /**
+        uuids: {
+          type: Boolean,
+          value: true,
+          reflectToAttribute:true
+        },
+        /**
         * The `error` event fires on error to the `here_now` request.
         *
         * @event error
         */
 
-      /**
+        /**
         * The `presence` event fires on successful completion of the `here_now` request.
         *
         * @event presence
         */
-      state: false,
-      uuids: true,
-      presence: [], 
+      },
       domReady: function() {
         var self = this;
         var onReady = function(e) {
@@ -784,42 +924,49 @@ This element obtains information about the current state of a channel, including
       }
     });
   </script>
-</polymer-element>
+</dom-module>
 
 <!--
 This element allows you to obtain information about the current list of channels to which a `uuid` is subscribed to.
 
 ### Basic Usage:
 
-    <core-pubnub publish_key="demo" subscribe_key="demo">
-      <core-pubnub-where-now uuid="Alice" presence="{{presence}}">
-      </core-pubnub-history>
-    </core-pubnub>
+<iron-pubnub publish_key="demo" subscribe_key="demo">
+<iron-pubnub-where-now uuid="Alice" presence="{{presence}}">
+</iron-pubnub-history>
+</iron-pubnub>
 
-    <h3>Alice's Presence</h3>
+<h3>Alice's Presence</h3>
 
-    <template repeat="{{pres in presence}}">
-      <p>{{pres}}</p>
-    </template>
+<template repeat="{{pres in presence}}">
+<p>{{pres}}</p>
+</template>
 
-@element core-pubnub-where-now
+@element iron-pubnub-where-now
 @blurb Element allows you to obtain information about the current list of channels to which a `uuid` is subscribed to.
 @status alpha
 @homepage 
 -->
-<polymer-element name="core-pubnub-where-now" hidden attributes="uuid presence pubnub done">
+
+<dom-module id="iron-pubnub-where-now">
+  <template></template>
   <script>
-    Polymer('core-pubnub-where-now', {
-      /**
+    Polymer({
+      is: "iron-pubnub-where-now",
+      properties: {
+        /**
         * The `presence` attribute contains the results of the `where-now` request.
         *
         * @attribute presence
         * @type Array
         * @default []
         */
-
-      /**
-        * The `uuid` specifies the `uuid` to return channel list for. Default is the uuid of the <core-pubnub> element this element is nested in.
+        presence: {
+          type: Array,
+          value: function(){return []}
+        },
+        /**
+        * The `uuid` specifies the `uuid` to return channel list for. Default is the uuid of the <iron-pubnub> element this element is nested in.
         *
         * **OPTIONAL**
         * 
@@ -827,20 +974,23 @@ This element allows you to obtain information about the current list of channels
         * @type String
         * @default undefined
         */
-      
-      /**
+        uuid: {
+          type: String,
+          reflectToAttribute:true
+        },
+        /**
         * The `error` event is fired on errors.
         *
         * @event error
         */
 
-      /**
+        /**
         * The `presence` event is fired on receiving a list of channels.
         *
         * @event presence
         */
 
-      presence: [],      
+      },
       domReady: function() {
         var self = this;
         var onReady = function(e) {
@@ -874,11 +1024,14 @@ This element allows you to obtain information about the current list of channels
       }
     });
   </script>
-</polymer-element>
+</dom-module>
 
-<polymer-element name="core-pubnub-replay" hidden attributes="source destination end limit reverse start stop pubnub done">
+<dom-module id="iron-pubnub-replay">
+  <template></template>
+
   <script>
-    Polymer('core-pubnub-replay', {
+    Polymer({
+      is: "iron-pubnub-replay",
       domReady: function() {
         var self = this;
         var onReady = function(e) {
@@ -896,8 +1049,6 @@ This element allows you to obtain information about the current list of channels
             start: self.start,
             stop: self.stop,
             callback: function(m) {
-              // console.log("AOSIDJIOAJDOIASJDIOAJSIDJAOJSDIAJDSOJAISDJOAJDISADJSIDAOJ");
-              // console.log(m);
               self.fire('callback', m);
               ready();
             }
@@ -913,4 +1064,5 @@ This element allows you to obtain information about the current list of channels
       }
     });
   </script>
-</polymer-element>
+</dom-module>
+
