@@ -1,4 +1,4 @@
-<link rel="import" href="../polymer/polymer.html"> 
+<link rel="import" href="../polymer/polymer.html">
 
 <!--
 This element initializes the PubNub client. This element must be created before attempting to utilize any other PubNub Polymer elements in order to establih account level credentials such as `publish_key` and `subscribe_key`, set `origin` server as well as any optional configurations such as `uuid`.
@@ -10,7 +10,7 @@ This element initializes the PubNub client. This element must be created before 
 @element iron-pubnub
 @blurb Element providing encapsulation of the PubNub JS SDK.
 @status alpha
-@demo demo.html
+@demo demo/index.html
 @homepage 
 -->
 
@@ -18,6 +18,7 @@ This element initializes the PubNub client. This element must be created before 
   <script src="https://cdn.pubnub.com/pubnub.js"></script>
 
   <template>
+    <content></content>
   </template>
 
   <script>
@@ -154,7 +155,7 @@ This element initializes the PubNub client. This element must be created before 
         * @default false
         */
         ssl: {
-          type: boolean,
+          type: Boolean,
           value: false,
           reflectToAttribute: true
         },
@@ -186,7 +187,7 @@ This element initializes the PubNub client. This element must be created before 
         },
       },
 
-      domReady: function() {
+      ready: function() {
         var settings = {
           publish_key: this.publish_key,
           subscribe_key: this.subscribe_key,
@@ -205,37 +206,37 @@ This element initializes the PubNub client. This element must be created before 
         this.done = true;
       },
       auth_keyChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       publish_keyChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       subscribe_keyChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       uuidChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       cipher_keyChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       noleaveChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       keepaliveChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       secret_keyChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       sslChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       windowingChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
       jsonpChanged: function(oldValue, newValue) {
-        this.domReady();
+        this.ready();
       },
     })
   </script>
@@ -270,7 +271,9 @@ Place it inside of a `<iron-pubnub>` element.
 @homepage 
 -->
 <dom-module id="iron-pubnub-subscribe">
-  <template></template>
+  <template>
+  <content></content>
+  </template>
 
   <script>
     Polymer({
@@ -299,8 +302,8 @@ Place it inside of a `<iron-pubnub>` element.
         * @default ''
         */
         channel: {
-          type: Array,
-          value: function(){return []},
+          type: String,
+          value: '',
           reflectToAttribute: true
         },
         /**
@@ -325,7 +328,7 @@ Place it inside of a `<iron-pubnub>` element.
         * @type Number 
         * @default 10
         */
-        messages: {
+        windowing: {
           type: Number,
           value: 10,
           reflectToAttribute: true
@@ -414,7 +417,7 @@ Place it inside of a `<iron-pubnub>` element.
         */
       },
       subscribe: true,
-      domReady: function() {
+      ready: function() {
         var self = this;
         this.sub = function() {
           self.messages = [];
@@ -444,7 +447,7 @@ Place it inside of a `<iron-pubnub>` element.
               // Fire Message Event.
               // console.log("message");
               // console.log(m);
-              self.messages.push(m);
+              self.push('messages',m);
               // console.log(self.messages);
               self.fire('callback', m);
             },
@@ -452,7 +455,7 @@ Place it inside of a `<iron-pubnub>` element.
               // Fire Presence Event.
               // console.log("presence");
               // console.log(m);
-              self.presence.push(m);
+              self.push('presence',m);
               self.fire('presence', m);
             },
             reconnect: function(m) {
@@ -525,7 +528,9 @@ Place it inside of a `<iron-pubnub>` element.
 @homepage 
 -->
 <dom-module id="iron-pubnub-publish">
-  <template></template>
+  <template>
+  <content></content>
+  </template>
   <script>
     Polymer({
       is:"iron-pubnub-publish",
@@ -581,7 +586,7 @@ Place it inside of a `<iron-pubnub>` element.
         * @event error
         */
       },
-      domReady: function() {
+      ready: function() {
         var self = this;
         var onReady = function(e) {
           // console.log(e);
@@ -755,7 +760,7 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
         * @event error
         */
 
-        domReady: function() {
+        ready: function() {
           var self = this;
           var onReady = function(e) {
             // console.log("CALL ME MAYBE");
@@ -847,7 +852,7 @@ This element obtains information about the current state of a channel, including
         * @default undefined
         */
         channel: {
-          type: Array,
+          type: String,
           reflectToAttribute:true
         },
         /**
@@ -890,7 +895,7 @@ This element obtains information about the current state of a channel, including
         * @event presence
         */
       },
-      domReady: function() {
+      ready: function() {
         var self = this;
         var onReady = function(e) {
           self.pubnub = e.detail;
@@ -991,7 +996,7 @@ This element allows you to obtain information about the current list of channels
         */
 
       },
-      domReady: function() {
+      ready: function() {
         var self = this;
         var onReady = function(e) {
           self.pubnub = e.detail;
@@ -1032,7 +1037,7 @@ This element allows you to obtain information about the current list of channels
   <script>
     Polymer({
       is: "iron-pubnub-replay",
-      domReady: function() {
+      ready: function() {
         var self = this;
         var onReady = function(e) {
           self.pubnub = e.detail;
