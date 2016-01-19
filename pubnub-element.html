@@ -272,7 +272,7 @@ Place it inside of a `<iron-pubnub>` element.
 -->
 <dom-module id="iron-pubnub-subscribe">
   <template>
-  <content></content>
+    <content></content>
   </template>
 
   <script>
@@ -288,6 +288,11 @@ Place it inside of a `<iron-pubnub>` element.
         * @default []
         */
         messages: {
+          type: Array,
+          value: function(){return []},
+          reflectToAttribute: true
+        },
+        presence: {
           type: Array,
           value: function(){return []},
           reflectToAttribute: true
@@ -420,8 +425,6 @@ Place it inside of a `<iron-pubnub>` element.
       ready: function() {
         var self = this;
         this.sub = function() {
-          self.messages = [];
-          self.presence = [];
           self.pubnub.subscribe({
             channel: self.channel,
             timetoken: self.timetoken,
@@ -529,7 +532,7 @@ Place it inside of a `<iron-pubnub>` element.
 -->
 <dom-module id="iron-pubnub-publish">
   <template>
-  <content></content>
+    <content></content>
   </template>
   <script>
     Polymer({
@@ -589,27 +592,13 @@ Place it inside of a `<iron-pubnub>` element.
       ready: function() {
         var self = this;
         var onReady = function(e) {
-          // console.log(e);
-          // console.log("PUBLISHING TIME");
           self.pubnub = e.detail;
           var ready = function() {
             self.fire('ready', self.pubnub);
             self.done = true;
           };
-          self.pubnub.publish({
-            channel: self.channel,
-            message: self.message,
-            publish_key: self.publish_key,
-            callback: function(m) {
-              self.fire('success', m);
-              ready();
-            },
-            error: function(m) {
-              self.fire('error', m);
-              ready();
-            }
-          });
           self.parentNode.removeEventListener('ready', onReady);
+          ready();
         }
         if (this.parentNode.done) {
           onReady({detail: this.parentNode.pubnub});
@@ -760,43 +749,43 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
         * @event error
         */
 
-        ready: function() {
-          var self = this;
-          var onReady = function(e) {
-            // console.log("CALL ME MAYBE");
-            self.pubnub = e.detail;
-            var ready = function() {
-              self.fire('ready', self.pubnub);
-              self.done = true;
-            };
-            self.pubnub.history({
-              channel: self.channel,
-              count: self.count,
-              end: self.end,
-              reverse: self.reverse,
-              start: self.start,
-              callback: function(m) {
-                self.history = m;
-                // console.log("HISTORY IS IN THE MAKING!");
-                // console.log(m);
-                self.fire('success', m);
-                ready();
-              },
-              error: function(m) {
-                self.fire('error', m);
-                ready();
-              }
-            });
-            self.parentNode.removeEventListener('ready', onReady);
-          }
-          if (this.parentNode.done) {
-            onReady({detail: this.parentNode.pubnub});
-          }
-          else {
-            this.parentNode.addEventListener('ready', onReady);
-          }
-        }
       },
+      ready: function() {
+        var self = this;
+        var onReady = function(e) {
+          // console.log("CALL ME MAYBE");
+          self.pubnub = e.detail;
+          var ready = function() {
+            self.fire('ready', self.pubnub);
+            self.done = true;
+          };
+          self.pubnub.history({
+            channel: self.channel,
+            count: self.count,
+            end: self.end,
+            reverse: self.reverse,
+            start: self.start,
+            callback: function(m) {
+              self.history = m;
+              // console.log("HISTORY IS IN THE MAKING!");
+              // console.log(m);
+              self.fire('success', m);
+              ready();
+            },
+            error: function(m) {
+              self.fire('error', m);
+              ready();
+            }
+          });
+          self.parentNode.removeEventListener('ready', onReady);
+        }
+        if (this.parentNode.done) {
+          onReady({detail: this.parentNode.pubnub});
+        }
+        else {
+          this.parentNode.addEventListener('ready', onReady);
+        }
+      }
 
     });
   </script>
