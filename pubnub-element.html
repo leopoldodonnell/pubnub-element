@@ -185,25 +185,26 @@ This element initializes the PubNub client. This element must be created before 
           type: Boolean,
           reflectToAttribute: true
         },
+        /**
+          * The `auto` attribute is used when you want that the component init automatically a Pubnub SDK.
+          *
+          * **OPTIONAL**
+          * 
+          * @attribute auto
+          * @type boolean
+          * @default false
+          **/
+        auto: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
       },
 
       ready: function() {
-        var settings = {
-          publish_key: this.publish_key,
-          subscribe_key: this.subscribe_key,
-          auth_key: this.auth_key,
-          uuid: this.uuid,
-          cipher_key: this.cipher_key,
-          noleave: this.noleave,
-          keepalive: this.keepalive,
-          secret_key: this.secret_key,
-          ssl: this.ssl,
-          windowing: this.windowing,
-          jsonp: this.jsonp
+        if (this.auto) {
+          this.init();
         }
-        this.pubnub = PUBNUB.init(settings);
-        this.fire('ready', this.pubnub);
-        this.done = true;
       },
       auth_keyChanged: function(oldValue, newValue) {
         this.ready();
@@ -238,6 +239,24 @@ This element initializes the PubNub client. This element must be created before 
       jsonpChanged: function(oldValue, newValue) {
         this.ready();
       },
+      init: function(){
+        var settings = {
+          publish_key: this.publish_key,
+          subscribe_key: this.subscribe_key,
+          auth_key: this.auth_key,
+          uuid: this.uuid,
+          cipher_key: this.cipher_key,
+          noleave: this.noleave,
+          keepalive: this.keepalive,
+          secret_key: this.secret_key,
+          ssl: this.ssl,
+          windowing: this.windowing,
+          jsonp: this.jsonp
+        }
+        this.pubnub = PUBNUB.init(settings);
+        this.fire('ready', this.pubnub);
+        this.done = true;
+      }
     })
   </script>
 </dom-module>
@@ -290,6 +309,20 @@ Place it inside of a `<iron-pubnub>` element.
         messages: {
           type: Array,
           value: function(){return []},
+          reflectToAttribute: true
+        },
+        /**
+          * The `auto` attribute is used when you want that the component init automatically a Pubnub SDK.
+          *
+          * **OPTIONAL**
+          * 
+          * @attribute auto
+          * @type boolean
+          * @default false
+          **/
+        auto: {
+          type: Boolean,
+          value: false,
           reflectToAttribute: true
         },
         presence: {
@@ -421,62 +454,13 @@ Place it inside of a `<iron-pubnub>` element.
         * @event reconnect
         */
       },
-      subscribe: true,
       ready: function() {
-        var self = this;
-        this.sub = function() {
-          self.pubnub.subscribe({
-            channel: self.channel,
-            timetoken: self.timetoken,
-            restore: self.restore,
-            connect: function (m) {
-              // Fire Connect Event.
-              // console.log("connect");
-              self.fire('connect', m);
-              self.fire('ready', self.pubnub);
-              self.done = true;
-            },
-            disconnect: function(m) {
-              // Fire Disconnect Event.
-              // console.log("disconnect");
-              self.fire('disconnect', m);
-            },
-            error: function(m) {
-              // Fire Error Event.
-              // console.log("error");
-              self.fire('error', m);
-            },
-            callback: function(m) {
-              // Fire Message Event.
-              // console.log("message");
-              // console.log(m);
-              self.push('messages',m);
-              // console.log(self.messages);
-              self.fire('callback', m);
-            },
-            presence: function(m) {
-              // Fire Presence Event.
-              // console.log("presence");
-              // console.log(m);
-              self.push('presence',m);
-              self.fire('presence', m);
-            },
-            reconnect: function(m) {
-              // Fire Reconnect Event.
-              // console.log("reconnect");
-              self.fire('reconnect', m);
-            },
-            windowing: self.windowing,
-            heartbeat: self.heartbeat,
-            state: self.state
-          });
-        };
         var onReady = function(e) {
           self.pubnub = e.detail;
-          if (self.subscribe) {
-            self.sub();
+          if (self.auto) {
+            self.subscribe();
+            self.parentNode.removeEventListener('ready', onReady);
           }
-          self.parentNode.removeEventListener('ready', onReady);
         };
         if (this.parentNode.done) {
           onReady({detail : this.parentNode.pubnub});
@@ -486,21 +470,65 @@ Place it inside of a `<iron-pubnub>` element.
         }
       },
       subscribeChanged: function(oldValue, newValue) {
-        if (newValue) {
-          this.sub();
+        if (newValue && auto) {
+          this.subscribe();
         }
         else {
-          this.pubnub.unsubscribe({
-            channel: this.channel    
-          });
+          this.unsubscribe();
         }
       },
-      detached: function() {
-        if (this.subscribe) {
-          this.pubnub.unsubscribe({
-            channel: this.channel
-          });
-        }
+      unsubscribe: function() {
+        this.pubnub.unsubscribe({
+          channel: this.channel
+        });
+      },
+      subscribe: function(){
+        var self = this;
+        self.pubnub.subscribe({
+          channel: self.channel,
+          timetoken: self.timetoken,
+          restore: self.restore,
+          connect: function (m) {
+            // Fire Connect Event.
+            // console.log("connect");
+            self.fire('connect', m);
+            self.fire('ready', self.pubnub);
+            self.done = true;
+          },
+          disconnect: function(m) {
+            // Fire Disconnect Event.
+            // console.log("disconnect");
+            self.fire('disconnect', m);
+          },
+          error: function(m) {
+            // Fire Error Event.
+            // console.log("error");
+            self.fire('error', m);
+          },
+          callback: function(m) {
+            // Fire Message Event.
+            // console.log("message");
+            // console.log(m);
+            self.push('messages',m);
+            // console.log(self.messages);
+            self.fire('callback', m);
+          },
+          presence: function(m) {
+            // Fire Presence Event.
+            // console.log("presence");
+            // console.log(m);
+            self.push('presence',m);
+            self.fire('presence', m);
+          },
+          reconnect: function(m) {
+            // Fire Reconnect Event.
+            // console.log("reconnect");
+            self.fire('reconnect', m);
+          },
+          windowing: self.windowing,
+          heartbeat: self.heartbeat,
+          state: self.state
+        });
       }
     });
   </script>
@@ -684,6 +712,20 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
           value: ''
         },
         /**
+          * The `auto` attribute is used when you want that the component init automatically a Pubnub SDK.
+          *
+          * **OPTIONAL**
+          * 
+          * @attribute auto
+          * @type boolean
+          * @default false
+          **/
+        auto: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+        /**
         * The `count` attribute specifies the number of historical messages to return.
         *
         * **OPTIONAL**
@@ -753,31 +795,18 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
       ready: function() {
         var self = this;
         var onReady = function(e) {
-          // console.log("CALL ME MAYBE");
+
           self.pubnub = e.detail;
+          var self = this;
           var ready = function() {
             self.fire('ready', self.pubnub);
             self.done = true;
           };
-          self.pubnub.history({
-            channel: self.channel,
-            count: self.count,
-            end: self.end,
-            reverse: self.reverse,
-            start: self.start,
-            callback: function(m) {
-              self.history = m;
-              // console.log("HISTORY IS IN THE MAKING!");
-              // console.log(m);
-              self.fire('success', m);
-              ready();
-            },
-            error: function(m) {
-              self.fire('error', m);
-              ready();
-            }
-          });
-          self.parentNode.removeEventListener('ready', onReady);
+          if (self.auto) {
+            self.history();
+            self.parentNode.removeEventListener('ready', onReady);
+          }
+
         }
         if (this.parentNode.done) {
           onReady({detail: this.parentNode.pubnub});
@@ -785,6 +814,25 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
         else {
           this.parentNode.addEventListener('ready', onReady);
         }
+      },
+      history: function(){
+        var self = this;
+        self.pubnub.history({
+          channel: self.channel,
+          count: self.count,
+          end: self.end,
+          reverse: self.reverse,
+          start: self.start,
+          callback: function(m) {
+            self.history = m;
+            self.fire('success', m);
+            ready();
+          },
+          error: function(m) {
+            self.fire('error', m);
+            ready();
+          }
+        });
       }
 
     });
@@ -883,6 +931,21 @@ This element obtains information about the current state of a channel, including
         *
         * @event presence
         */
+
+        /**
+          * The `auto` attribute is used when you want that the component init automatically a Pubnub SDK.
+          *
+          * **OPTIONAL**
+          * 
+          * @attribute auto
+          * @type boolean
+          * @default false
+          **/
+        auto: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
       },
       ready: function() {
         var self = this;
@@ -892,22 +955,10 @@ This element obtains information about the current state of a channel, including
             self.fire('ready', self.pubnub);
             self.done = true;
           };
-          self.pubnub.here_now({
-            channel: self.channel,
-            state: self.state,
-            uuids: self.uuids,
-            error: function(m) {
-              // console.log('error');
-              self.fire('error', m);
-            },
-            callback: function(m) {
-              // console.log('callback');
-              self.presence = m.uuids;
-              // console.log(m);
-              self.fire('presence', m);
-            }
-          });
-          self.parentNode.removeEventListener('ready', onReady);
+          if (self.auto) {
+            self.here_now();
+            self.parentNode.removeEventListener('ready', onReady);
+          }
         }
         if (this.parentNode.done) {
           onReady({detail: this.parentNode.pubnub});
@@ -915,6 +966,24 @@ This element obtains information about the current state of a channel, including
         else {
           this.parentNode.addEventListener('ready', onReady);
         }
+      },
+      here_now: function(){
+        var self = this;
+        this.pubnub.here_now({
+          channel: self.channel,
+          state: self.state,
+          uuids: self.uuids,
+          error: function(m) {
+            // console.log('error');
+            self.fire('error', m);
+          },
+          callback: function(m) {
+            // console.log('callback');
+            self.presence = m.uuids;
+            // console.log(m);
+            self.fire('presence', m);
+          }
+        });
       }
     });
   </script>
@@ -984,6 +1053,20 @@ This element allows you to obtain information about the current list of channels
         * @event presence
         */
 
+        /**
+          * The `auto` attribute is used when you want that the component init automatically a Pubnub SDK.
+          *
+          * **OPTIONAL**
+          * 
+          * @attribute auto
+          * @type boolean
+          * @default false
+          **/
+        auto: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
       },
       ready: function() {
         var self = this;
@@ -993,21 +1076,10 @@ This element allows you to obtain information about the current list of channels
             self.fire('ready', self.pubnub);
             self.done = true;
           };
-          self.pubnub.where_now({
-            uuid: self.uuid,
-            callback: function(m) {
-              // console.log(m);
-              self.presence = m.channels;
-              self.fire('presence', m);
-              ready();
-            },
-            error: function(m) {
-              // console.log(m);
-              self.fire('error', m);
-              ready();
-            }
-          });
-          self.parentNode.removeEventListener('ready', onReady);
+          if(self.auto){
+            self.where_now();
+            self.parentNode.removeEventListener('ready', onReady);
+          }
         }
         if (this.parentNode.done) {
           onReady({detail: this.parentNode.pubnub});
@@ -1015,6 +1087,23 @@ This element allows you to obtain information about the current list of channels
         else {
           this.parentNode.addEventListener('ready', onReady);
         }
+      },
+      where_now: function(){
+        var self = this;
+        self.pubnub.where_now({
+          uuid: self.uuid,
+          callback: function(m) {
+            // console.log(m);
+            self.presence = m.channels;
+            self.fire('presence', m);
+            ready();
+          },
+          error: function(m) {
+            // console.log(m);
+            self.fire('error', m);
+            ready();
+          }
+        });
       }
     });
   </script>
@@ -1026,6 +1115,7 @@ This element allows you to obtain information about the current list of channels
   <script>
     Polymer({
       is: "iron-pubnub-replay",
+
       ready: function() {
         var self = this;
         var onReady = function(e) {
@@ -1059,4 +1149,3 @@ This element allows you to obtain information about the current list of channels
     });
   </script>
 </dom-module>
-

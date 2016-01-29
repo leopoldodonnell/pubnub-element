@@ -5,5 +5,7 @@ See the [component page](http://pubnub.github.io/pubnub-polymer) for more inform
 
 ## Demo
 
-Checkout the [Demo](http://pubnub.github.io/pubnub-polymer/components/pubnub-element/demo.html)!
+Use `polyserve` to deploy it
+
+
 
