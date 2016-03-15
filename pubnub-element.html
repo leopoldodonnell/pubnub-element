@@ -455,7 +455,7 @@ Place it inside of a `<pubnub-client>` element.
         */
       },
       ready: function() {
-        self = this;
+        var self = this;
         var onReady = function(e) {
           self.pubnub = e.detail;
           if (self.auto) {
