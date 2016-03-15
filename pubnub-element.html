@@ -5,16 +5,16 @@ This element initializes the PubNub client. This element must be created before 
 
 ### Basic Usage:
 
-<iron-pubnub publish_key="demo" subscribe_key="demo"></iron-pubnub>
+<pubnub-client publish_key="demo" subscribe_key="demo"></pubnub-client>
 
-@element iron-pubnub
+@element pubnub-client
 @blurb Element providing encapsulation of the PubNub JS SDK.
 @status alpha
 @demo demo/index.html
 @homepage 
 -->
 
-<dom-module id="iron-pubnub">
+<dom-module id="pubnub-client">
   <script src="https://cdn.pubnub.com/pubnub.js"></script>
 
   <template>
@@ -23,7 +23,7 @@ This element initializes the PubNub client. This element must be created before 
 
   <script>
     Polymer({
-      is:"iron-pubnub",
+      is:"pubnub-client",
       properties: {
         /**
         * The `publish_key` attribute sets the publish_key that will be used when publishing messages to a channel.
@@ -270,12 +270,12 @@ All messages received while subscribed to the channel will be pushed into the me
 
 ### Basic Usage:
 
-Place it inside of a `<iron-pubnub>` element.
+Place it inside of a `<pubnub-client>` element.
 
-<iron-pubnub publish_key="demo" subscribe_key="demo">
-<iron-pubnub-subscribe channel="testChannel" messages="{{messages}}">
-</iron-pubnub-subscribe>
-</iron-pubnub>
+<pubnub-client publish_key="demo" subscribe_key="demo">
+<pubnub-subscribe channel="testChannel" messages="{{messages}}">
+</pubnub-subscribe>
+</pubnub-client>
 
 <h3>testChannel Messages</h3>
 
@@ -284,19 +284,19 @@ Place it inside of a `<iron-pubnub>` element.
 </template>
 
 
-@element iron-pubnub-subscribe
+@element pubnub-subscribe
 @blurb Element that subscribes to PubNub channels.
 @status alpha
 @homepage 
 -->
-<dom-module id="iron-pubnub-subscribe">
+<dom-module id="pubnub-subscribe">
   <template>
     <content></content>
   </template>
 
   <script>
     Polymer({
-      is:"iron-pubnub-subscribe",
+      is:"pubnub-subscribe",
       properties: {
         /**
         * The `messages` attribute will contain an array of all messages received since subscribing to the channel. 
@@ -546,25 +546,25 @@ The message argument can contain any JSON serializable data, including: Objects,
 
 ### Basic Usage:
 
-Place it inside of a `<iron-pubnub>` element.
+Place it inside of a `<pubnub-client>` element.
 
-<iron-pubnub publish_key="demo" subscribe_key="demo">
-<iron-pubnub-publish channel="testChannel" message="Polymer Rules!">
-</iron-pubnub-publish>
-</iron-pubnub>
+<pubnub-client publish_key="demo" subscribe_key="demo">
+<pubnub-publish channel="testChannel" message="Polymer Rules!">
+</pubnub-publish>
+</pubnub-client>
 
-@element iron-pubnub-publish
+@element pubnub-publish
 @blurb Element that publishes to a PubNub channel.
 @status alpha
 @homepage 
 -->
-<dom-module id="iron-pubnub-publish">
+<dom-module id="pubnub-publish">
   <template>
     <content></content>
   </template>
   <script>
     Polymer({
-      is:"iron-pubnub-publish",
+      is:"pubnub-publish",
       properties: {
         /**
         * The `channel` attribute specifies the channel name to publish messages to. 
@@ -664,10 +664,10 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
 
 ### Basic Usage:
 
-<iron-pubnub publish_key="demo" subscribe_key="demo">
-<iron-pubnub-history channel="testChannel" history="{{history}}">
-</iron-pubnub-history>
-</iron-pubnub>
+<pubnub-client publish_key="demo" subscribe_key="demo">
+<pubnub-history channel="testChannel" history="{{history}}">
+</pubnub-history>
+</pubnub-client>
 
 <h3>testChannel History</h3>
 
@@ -675,16 +675,16 @@ PubNub Storage/Playback Service provides real-time access to an unlimited histor
 <p>{{hist}}</p>
 </template>
 
-@element iron-pubnub-history
+@element pubnub-history
 @blurb Element fetches historical messages of a channel.
 @status alpha
 @homepage 
 -->
-<dom-module id="iron-pubnub-history">
+<dom-module id="pubnub-history">
   <template></template>
   <script>
     Polymer({
-      is:"iron-pubnub-history",
+      is:"pubnub-history",
       properties: {
         /**
         * The `history` attribute contains the result of the `history` call.
@@ -845,10 +845,10 @@ This element obtains information about the current state of a channel, including
 
 ### Basic Usage:
 
-<iron-pubnub publish_key="demo" subscribe_key="demo">
-<iron-pubnub-here-now channel="testChannel" presence="{{presence}}">
-</iron-pubnub-history>
-</iron-pubnub>
+<pubnub-client publish_key="demo" subscribe_key="demo">
+<pubnub-here-now channel="testChannel" presence="{{presence}}">
+</pubnub-history>
+</pubnub-client>
 
 <h3>testChannel Presence</h3>
 
@@ -856,17 +856,17 @@ This element obtains information about the current state of a channel, including
 <p>{{pres}}</p>
 </template>
 
-@element iron-pubnub-here-now
+@element pubnub-here-now
 @blurb Element obtains information about the current stat of a channel.
 @status alpha
 @homepage 
 -->
-<dom-module id="iron-pubnub-here-now">
+<dom-module id="pubnub-here-now">
 
   <template></template>
   <script>
     Polymer({
-      is:"iron-pubnub-here-now",
+      is:"pubnub-here-now",
       properties: {
         /**
         * The `presence` attribute contains the results of the `here-now` request.
@@ -994,10 +994,10 @@ This element allows you to obtain information about the current list of channels
 
 ### Basic Usage:
 
-<iron-pubnub publish_key="demo" subscribe_key="demo">
-<iron-pubnub-where-now uuid="Alice" presence="{{presence}}">
-</iron-pubnub-history>
-</iron-pubnub>
+<pubnub-client publish_key="demo" subscribe_key="demo">
+<pubnub-where-now uuid="Alice" presence="{{presence}}">
+</pubnub-history>
+</pubnub-client>
 
 <h3>Alice's Presence</h3>
 
@@ -1005,17 +1005,17 @@ This element allows you to obtain information about the current list of channels
 <p>{{pres}}</p>
 </template>
 
-@element iron-pubnub-where-now
+@element pubnub-where-now
 @blurb Element allows you to obtain information about the current list of channels to which a `uuid` is subscribed to.
 @status alpha
 @homepage 
 -->
 
-<dom-module id="iron-pubnub-where-now">
+<dom-module id="pubnub-where-now">
   <template></template>
   <script>
     Polymer({
-      is: "iron-pubnub-where-now",
+      is: "pubnub-where-now",
       properties: {
         /**
         * The `presence` attribute contains the results of the `where-now` request.
@@ -1029,7 +1029,7 @@ This element allows you to obtain information about the current list of channels
           value: function(){return []}
         },
         /**
-        * The `uuid` specifies the `uuid` to return channel list for. Default is the uuid of the <iron-pubnub> element this element is nested in.
+        * The `uuid` specifies the `uuid` to return channel list for. Default is the uuid of the <pubnub-client> element this element is nested in.
         *
         * **OPTIONAL**
         * 
@@ -1109,12 +1109,12 @@ This element allows you to obtain information about the current list of channels
   </script>
 </dom-module>
 
-<dom-module id="iron-pubnub-replay">
+<dom-module id="pubnub-replay">
   <template></template>
 
   <script>
     Polymer({
-      is: "iron-pubnub-replay",
+      is: "pubnub-replay",
 
       ready: function() {
         var self = this;

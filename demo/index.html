@@ -14,24 +14,24 @@
   </head>
   <body>
     <template is="dom-bind" id="bind">
-      <iron-pubnub publish_key="pub-c-0236c7bb-a942-4ffd-93fe-c60380d89611"
+      <pubnub-client publish_key="pub-c-0236c7bb-a942-4ffd-93fe-c60380d89611"
                    subscribe_key="sub-c-b969ffd2-2707-11e4-a114-02ee2ddab7fe" 
                    origin="pubsub.pubnub.com" id="core" uuid="">
-        <iron-pubnub-subscribe channel="pubnubPolymerDemo" id="sub" messages="{{msgs}}" on-presence="mapPresence" presence="{{presence}}">
-          <iron-pubnub-publish channel="pubnubPolymerDemo" id="pub" message="{{input_text}}">
-            <iron-pubnub-publish channel="pubnubPolymerDemo" id="pub2" message="connecting!">
-              <iron-pubnub-history channel="pubnubPolymerDemo" id="hist" on-success="recoverHist"></iron-pubnub-history>
-              <iron-pubnub-here-now channel="pubnubPolymerDemo" id="here" on-presence="whoHere"></iron-pubnub-here-now>
-              <iron-pubnub-where-now id="where" on-presence="whereIam" uuid=""></iron-pubnub-where-now>
-            </iron-pubnub-publish>
-          </iron-pubnub-publish>
-        </iron-pubnub-subscribe>
-      </iron-pubnub>
+        <pubnub-subscribe channel="pubnubPolymerDemo" id="sub" messages="{{msgs}}" on-presence="mapPresence" presence="{{presence}}">
+          <pubnub-publish channel="pubnubPolymerDemo" id="pub" message="{{input_text}}">
+            <pubnub-publish channel="pubnubPolymerDemo" id="pub2" message="connecting!">
+              <pubnub-history channel="pubnubPolymerDemo" id="hist" on-success="recoverHist"></pubnub-history>
+              <pubnub-here-now channel="pubnubPolymerDemo" id="here" on-presence="whoHere"></pubnub-here-now>
+              <pubnub-where-now id="where" on-presence="whereIam" uuid=""></pubnub-where-now>
+            </pubnub-publish>
+          </pubnub-publish>
+        </pubnub-subscribe>
+      </pubnub-client>
       <div class="container">
         <h1>PubNub Polymer Demo</h1><hr>
         <div class="row">
           <div class="col-md-8">
-            <h2> <a href="./#iron-pubnub-subscribe">&lt;iron-pubnub-subscribe&gt; </a> </h2>
+            <h2> <a href="./#pubnub-subscribe">&lt;pubnub-subscribe&gt; </a> </h2>
             <div class="col-md-6">
               <h2>Messages</h2>
               <list-data heading="Received Messages" id="msgsList" data="{{msgs}}"></list-data>
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <h2> <a href="./#iron-pubnub-publish" >&lt;iron-pubnub-publish&gt; </a> </h2>
+            <h2> <a href="./#pubnub-publish" >&lt;pubnub-publish&gt; </a> </h2>
             <div class="form-group">
               <label><h2>Publish a message!</h2></label>
               <input type="text" class="form-control" id="newMsg" on-keyup="checkKeyUp" value="{{input_text::input}}">
@@ -54,18 +54,18 @@
         <p>Test</p>
         <div class="row">
           <div class="col-md-4">
-            <h2> <a href="./#iron-pubnub-history">&lt;iron-pubnub-history&gt; </a>
+            <h2> <a href="./#pubnub-history">&lt;pubnub-history&gt; </a>
             </h2>
             <!-- <button id="histButton" type="submit" class="btn btn-default"><i class="fa fa-refresh"></i></button> <br><br> -->
             <list-data heading="Last 100 Messages" id="histList" data="{{hist}}"></list-data>
           </div>
           <div class="col-md-4">
-            <h2> <a href="./#iron-pubnub-here-now">&lt;iron-pubnub-here-now&gt; </a> </h2>
+            <h2> <a href="./#pubnub-here-now">&lt;pubnub-here-now&gt; </a> </h2>
             <!--<button id="hereButton" type="submit" class="btn btn-default"><i class="fa fa-refresh"></i></button> <br><br>-->
             <list-data heading="Current Users" id="hereList" data="{{here}}"></list-data>
           </div>
           <div class="col-md-4">
-            <h2> <a href="./#iron-pubnub-where-now">&lt;iron-pubnub-where-now&gt; </a> </h2>
+            <h2> <a href="./#pubnub-where-now">&lt;pubnub-where-now&gt; </a> </h2>
             <!--<button id="whereButton" type="submit" class="btn btn-default"><i class="fa fa-refresh"></i></button> <br><br>-->
             <list-data heading="Where am I?" id="whereList" data="{{where}}"></list-data>
           </div>
